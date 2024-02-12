@@ -10,7 +10,7 @@ const userController = {
             res.status(404).json({ message: `User with ${email} already exists, please login with the user account.`})
         }
 
-        const user = User.create({
+        const user = await User.create({
             name,
             email,
             password

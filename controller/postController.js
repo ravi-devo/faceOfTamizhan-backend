@@ -57,11 +57,45 @@ const postController = {
         try {
             const post = await Post.findById(postId);
             if (!post) return res.status(404).json({ message: "Post not found." });
-            if(!post.likes.includes(userId)) return res.status(400).json({message: "Post not liked to dislike."});
+            if (!post.likes.includes(userId)) return res.status(400).json({ message: "Post not liked to dislike." });
             const likedIndex = post.likes.indexOf(userId);
             post.likes.splice(likedIndex, 1);
             await post.save();
-            res.status(201).json({message: "Post disliked successfully", data: post});
+            res.status(201).json({ message: "Post disliked successfully", data: post });
+        } catch (error) {
+            res.status(500).json({ message: `Internal server error.`, error });
+        }
+    },
+    addComment: async (req, res) => {
+        const postId = req.params.postId;
+        const userId = req.user._id;
+        const { text } = req.body;
+
+        try {
+            const post = await Post.findById(postId);
+            const commentObj = { text, author: userId };
+            post.comments.push(commentObj);
+            await post.save();
+            res.json({ message: `Comment added successfully.`, post });
+        } catch (error) {
+            res.status(500).json({ message: `Internal server error.`, error });
+        }
+    },
+    deleteComment: async (req, res) => {
+        const postId = req.params.postId;
+        const commentId = req.params.commentId;
+        const userId = req.user._id;
+
+        try {
+            const post = await Post.findById(postId);
+            if (!post) return res.status(404).json({ message: `Post not found.` });
+            const commentIndex = post.comments.findIndex(comment => comment._id.toString() === commentId);
+            if (commentIndex === -1) return res.status(404).json({ message: `Comment not found.` });
+            //Only the person who commented can delete the post.
+            if (post.comments[commentIndex].author.toString() != userId) return res.status(401).json({ message: `You are not authorized to delete this comment.`, comment: post.comments[commentIndex] })
+            post.comments.splice(commentIndex, 1);
+            await post.save();
+            res.json({ message: `Comment deleted successfully.`, commentDeleted: post.comments[commentIndex] });
         } catch (error) {
             res.status(500).json({ message: `Internal server error.`, error });
         }

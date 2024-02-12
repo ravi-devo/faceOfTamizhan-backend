@@ -34,6 +34,10 @@ const userController = {
         }else{
             res.status(401).json({ message: `Invalid email or password.`});
         }
+    },
+    logOut: async (req, res) => {
+        res.clearCookie('jwt');
+        res.redirect('https://www.google.com');
     }
 }
 

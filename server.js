@@ -14,7 +14,10 @@ connectDB();
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+    origin: 'https://faceoftamizhan-frontend.netlify.app',
+    credentials: true // Allow cookies to be sent
+  }));
 
 app.use(express.json());
 

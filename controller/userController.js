@@ -3,23 +3,29 @@ const generateToken = require('../utils/generateToken');
 
 const userController = {
     register: async (req, res) => {
-        const { email, name, password } = req.body;
+        const { email, firstName, lastName, password, city, country } = req.body;
         const userExists = await User.findOne({ email });
 
+        const name = `${firstName} ${lastName}`;
+        const place = `${city}, ${country}`;
+        const initial = `${firstName.charAt(0)}${lastName.charAt(0)}`;
+
         if(userExists){
-            res.status(404).json({ message: `User with ${email} already exists, please login with the user account.`})
+            return res.status(404).json({ message: `User with ${email} already exists, please login with the user account.`})
         }
 
         const user = await User.create({
             name,
             email,
-            password
+            initial,
+            password,
+            place
         });
 
         //Checking if the user is created or not.
         if(user){
             generateToken(res, user._id);
-            res.status(201).json({message: `User registered successfully.`});
+            res.status(201).json({message: `User registered successfully`, data: user});
         }else{
             res.status(400).json({message: `Invalid user data.`})
         }
@@ -30,14 +36,18 @@ const userController = {
 
         if(user && (await user.matchPassword(password))){
             generateToken(res, user._id);
-            res.status(201).json({ message: `User authenticated successfully.`})
+            res.status(201).json({ message: `User authenticated successfully`, data: user})
         }else{
             res.status(401).json({ message: `Invalid email or password.`});
         }
     },
     logOut: async (req, res) => {
-        res.clearCookie('jwt');
-        res.redirect('https://www.google.com');
+        try {
+            res.clearCookie('jwt');
+            res.status(200).json({message: `Logout successful.`})
+        } catch (error) {
+            console.log(error)
+        }
     }
 }
 

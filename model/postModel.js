@@ -1,17 +1,35 @@
 const mongoose = require('mongoose');
 
 const postSchema = mongoose.Schema({
-    title: {
-        type: String,
-        required: true
-    },
     content: {
         type: String,
         required: true
     },
     author: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        type: {
+            _id: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'User',
+                required: true
+            },
+            name: {
+                type: String,
+                required: true
+            },
+            initial: {
+                type: String,
+                required: true
+            },
+            email: {
+                type: String,
+                required: true
+            },
+            place: {
+                type: String,
+                required: true
+            }
+        },
+        required: true
     },
     likes: [{
         type: mongoose.Schema.Types.ObjectId,
@@ -23,8 +41,30 @@ const postSchema = mongoose.Schema({
             required: true
         },
         author: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User'
+            type: {
+                _id: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'User',
+                    required: true
+                },
+                name: {
+                    type: String,
+                    required: true
+                },
+                initial: {
+                    type: String,
+                    required: true
+                },
+                email: {
+                    type: String,
+                    required: true
+                },
+                place: {
+                    type: String,
+                    required: true
+                }
+            },
+            required: true
         },
         createdAt: {
             type: Date,

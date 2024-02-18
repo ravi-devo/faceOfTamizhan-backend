@@ -6,7 +6,7 @@ const router = express.Router();
 
 //Create, get and delete post routes
 router.post('/', authMiddleware, postController.createPost);
-router.get('/', postController.getAllPosts);
+router.get('/', authMiddleware, postController.getAllPosts);
 router.get('/myPost', authMiddleware, postController.getMyPosts);
 router.delete('/:postId', authMiddleware, postController.deletePost);
 

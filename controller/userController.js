@@ -24,8 +24,8 @@ const userController = {
 
         //Checking if the user is created or not.
         if(user){
-            generateToken(res, user._id);
-            res.status(201).json({message: `User registered successfully`, data: user});
+            const token = await generateToken(res, user._id);
+            res.status(201).json({message: `User registered successfully`, data: user, token});
         }else{
             res.status(400).json({message: `Invalid user data.`})
         }
@@ -35,15 +35,14 @@ const userController = {
         const user = await User.findOne({ email });
 
         if(user && (await user.matchPassword(password))){
-            generateToken(res, user._id);
-            res.status(201).json({ message: `User authenticated successfully`, data: user})
+            const token = await generateToken(res, user._id);
+            res.status(201).json({ message: `User authenticated successfully`, data: user, token})
         }else{
             res.status(401).json({ message: `Invalid email or password.`});
         }
     },
     logOut: async (req, res) => {
         try {
-            res.clearCookie('jwt');
             res.status(200).json({message: `Logout successful.`})
         } catch (error) {
             console.log(error)

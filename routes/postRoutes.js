@@ -9,6 +9,7 @@ router.post('/', authMiddleware, postController.createPost);
 router.get('/', authMiddleware, postController.getAllPosts);
 router.get('/myPost', authMiddleware, postController.getMyPosts);
 router.delete('/:postId', authMiddleware, postController.deletePost);
+router.get('/test', postController.testControl);
 
 //Like and dislike post routes
 router.post('/:postId/like', authMiddleware, postController.likePost);

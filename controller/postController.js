@@ -103,6 +103,13 @@ const postController = {
         } catch (error) {
             res.status(500).json({ message: `Internal server error.`, error });
         }
+    },
+    testControl: async (req, res) => {
+        try {
+            res.json({message: "Server is running"})
+        } catch (error) {
+            console.log("ERROR", error);
+        }
     }
 }
 

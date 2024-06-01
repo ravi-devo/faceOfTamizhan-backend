@@ -1,6 +1,6 @@
-# Project Name Backend
+# Face Of Tamizhan Backend
 
-This repository contains the backend code for the **Project Name** application. This backend is built using [Node.js](https://nodejs.org/) with [Express.js](https://expressjs.com/) framework and uses [MongoDB](https://www.mongodb.com/) as the database.
+This repository contains the backend code for the **Face Of Tamizhan** application. This backend is built using [Node.js](https://nodejs.org/) with [Express.js](https://expressjs.com/) framework and uses [MongoDB](https://www.mongodb.com/) as the database.
 
 ## Table of Contents
 
